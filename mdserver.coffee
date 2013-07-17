@@ -28,7 +28,7 @@ post = '
 	}});
 });</script>'
 
-# watch src/ render
+# watch src/ and render
 
 fs.watch "src/", {persistent: true}, (event, filename) ->
 	if filename.split('.').pop() == "md"
