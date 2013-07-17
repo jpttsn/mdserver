@@ -16,17 +16,17 @@ console.log("Listening on port " + port)
 
 # rendering sugar
 
-pre = '<!doctype html public="embarassment"><meta charset="utf-8"><title>mdserver</title>'
+pre = '<!doctype html public="display of affection"><meta charset="utf-8"><title>mdserver: '
 
 post = '
 <script src="lib/jquery-2.0.3.min.js"></script>
 <script src="socket.io/socket.io.js"></script> 
-<script>$(document).ready(function() {
+<script> $(document).ready(function() {
 	var socket = io.connect();
 	socket.on("please", function (what) {
-		if (what === "refresh") {document.location.reload(true);
-	}});
-});</script>'
+		if (what === "refresh") {document.location.reload(true);}
+	});
+}); </script>'
 
 # watch src/ and render
 
@@ -36,7 +36,7 @@ fs.watch "src/", {persistent: true}, (event, filename) ->
 			if err
 				throw err
 			marked data, { highlight: null }, (err, html) ->
-				fs.writeFile "www/" + filename.slice(0, -3), pre + html + post, (err) ->
+				fs.writeFile "www/" + filename.slice(0, -3), pre + filename + '</title>' + html + post, (err) ->
 					if err
 						throw err
 					console.log "Rendered " + filename
