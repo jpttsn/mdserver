@@ -1,0 +1,13 @@
+{
+  "name": "mdserver",
+  "version": "0.1.0",
+  "description": "Renders markdown and serves the html, with socket.io livereload",
+  "main": "mdserver.coffee",
+  "author": "jpttsn",
+  "license": "BSD",
+  "dependencies": {
+  	"express": "3.x",
+    "marked": "0.2.9",
+    "socket.io": "0.9.16"
+  }
+}
