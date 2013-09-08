@@ -25,5 +25,3 @@ Changes to /www will cause a refresh.
 ## Known problems
 
 * Only renders the root of src/, ie. not recursively
-
-* Doesn't catch up on launch: only renders things that change while it's running
