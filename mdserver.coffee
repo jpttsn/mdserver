@@ -1,9 +1,10 @@
-http = require 'http'
+exec = require('child_process').exec
 express = require 'express'
 fs = require 'fs'
+http = require 'http'
 io = require 'socket.io'
 marked = require 'marked'
-
+sys = require 'sys'
 
 #options
 
@@ -25,6 +26,7 @@ if verbose
 # rendering sugar
 
 pre = '<!doctype html public="display of affection"><meta charset="utf-8">
+<link rel="stylesheet" href="css/style.css">
 <script src="lib/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({tex2jax: {inlineMath: [["$","$"]] }});
@@ -59,10 +61,18 @@ fs.watch "src/", {persistent: true}, (event, filename) ->
 		if verbose
 			console.log "Won't render " + filename
 
-# watch www/ and refresh
+# start server
 
 socket = io.listen server, {log: false}
 socket.set 'log level', 1
+
+# touch src/ to render a first time
+
+exec 'touch src/*', (err, stdout, stderr) ->
+	if verbose
+		console.log 'Touched source files'
+
+# watch www/ and refresh
 
 socket.on 'connection', (socket) ->
 	fs.watch "www/", {persistent: true}, (event, filename) ->
