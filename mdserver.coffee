@@ -21,7 +21,9 @@ server = http.createServer app
 port = 3000
 server.listen port
 if verbose
+	console.log "Using /src and/www in " + __dirname
 	console.log("Listening on port " + port)
+
 
 # rendering sugar
 
@@ -46,13 +48,13 @@ post = '
 
 # watch src/ and render
 
-fs.watch "src/", {persistent: true}, (event, filename) ->
+fs.watch __dirname + "/src/", {persistent: true}, (event, filename) ->
 	if filename.split('.').pop() == "md"
-		fs.readFile "src/" + filename, {encoding: "utf8"}, (err, data) ->
+		fs.readFile __dirname + "/src/" + filename, {encoding: "utf8"}, (err, data) ->
 			if err
 				throw err
 			marked data, { highlight: null, gfm: true }, (err, html) ->
-				fs.writeFile "www/" + filename.slice(0, -3), pre + filename + '</title>' + html + post, (err) ->
+				fs.writeFile __dirname + "/www/" + filename.slice(0, -3), pre + filename + '</title>' + html + post, (err) ->
 					if err
 						throw err
 					if verbose
@@ -68,14 +70,14 @@ socket.set 'log level', 1
 
 # touch src/ to render a first time
 
-exec 'touch src/*', (err, stdout, stderr) ->
+exec 'touch ' + __dirname + '/src/*', (err, stdout, stderr) ->
 	if verbose
 		console.log 'Touched source files'
 
 # watch www/ and refresh
 
 socket.on 'connection', (socket) ->
-	fs.watch "www/", {persistent: true}, (event, filename) ->
+	fs.watch __dirname + "/www/", {persistent: true}, (event, filename) ->
 		if verbose
 			console.log "Refreshing " + filename
 		socket.emit 'please', 'refresh'
